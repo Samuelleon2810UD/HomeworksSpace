@@ -38,16 +38,18 @@ Relaciones principales:
 
 ```
 src/
+Hechizo/
 ├── Hechizo.java              # Interfaz (estrategia)
 ├── WingardiumLeviosa.java    # Hechizo concreto
 ├── OculusReparo.java         # Hechizo concreto
 ├── Expelliarmus.java         # Hechizo concreto
 ├── ExpectoPatronum.java      # Hechizo concreto
+Personaje/
 ├── Personaje.java            # Clase abstracta (contexto de la estrategia)
 ├── HarryPotter.java          # Personaje concreto
 ├── RonWeasley.java           # Personaje concreto
 ├── HermioneGranger.java      # Personaje concreto
-└── Main.java                 # Menú interactivo de consola
+Main.java                 # Menú interactivo de consola
 diagrama_clases.mermaid       # Diagrama de clases UML
 ```
 
