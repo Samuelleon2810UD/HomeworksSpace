@@ -1,0 +1,73 @@
+classDiagram
+    class Hechizo {
+        <<interface>>
+        +lanzar(objetivo: String) void
+        +getNombre() String
+    }
+
+    class WingardiumLeviosa {
+        +lanzar(objetivo: String) void
+        +getNombre() String
+    }
+
+    class OculusReparo {
+        +lanzar(objetivo: String) void
+        +getNombre() String
+    }
+
+    class Expelliarmus {
+        +lanzar(objetivo: String) void
+        +getNombre() String
+    }
+
+    class ExpectoPatronum {
+        +lanzar(objetivo: String) void
+        +getNombre() String
+    }
+
+    class Personaje {
+        <<abstract>>
+        -nombre: String
+        -hechizo: Hechizo
+        #Personaje(nombre: String, hechizoInicial: Hechizo)
+        +aprenderHechizo(nuevoHechizo: Hechizo) void
+        +lanzarHechizo(objetivo: String) void
+        +getNombre() String
+        +getHechizoActual() Hechizo
+    }
+
+    class HarryPotter {
+        +HarryPotter()
+    }
+
+    class RonWeasley {
+        +RonWeasley()
+    }
+
+    class HermioneGranger {
+        +HermioneGranger()
+    }
+
+    class Main {
+        -personajes: List~Personaje~
+        -hechizosDisponibles: List~Hechizo~
+        +main(args: String[]) void
+    }
+
+    %% Implementaciones de la interfaz Hechizo
+    Hechizo <|.. WingardiumLeviosa
+    Hechizo <|.. OculusReparo
+    Hechizo <|.. Expelliarmus
+    Hechizo <|.. ExpectoPatronum
+
+    %% Herencia de Personaje
+    Personaje <|-- HarryPotter
+    Personaje <|-- RonWeasley
+    Personaje <|-- HermioneGranger
+
+    %% Composición: un Personaje TIENE un Hechizo (intercambiable en runtime)
+    Personaje "1" *-- "1" Hechizo : usa actualmente
+
+    %% Main orquesta los personajes y hechizos disponibles
+    Main ..> Personaje : gestiona
+    Main ..> Hechizo : ofrece opciones
