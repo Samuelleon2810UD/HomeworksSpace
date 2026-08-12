@@ -1,4 +1,4 @@
-```markdown
+
 # 🦆 DuckHuntU - Simulación de Patrones de Diseño (Strategy & Bridge)
 
 **DuckHuntU** es un proyecto educativo desarrollado en Java que ilustra la implementación de los patrones de diseño **Strategy** y **Bridge** para la gestión desacoplada de comportamientos y características en entidades del sistema (patos).
