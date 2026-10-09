@@ -28,6 +28,7 @@ public class Listas {
     }
 
     public String imprimirLista() {
+        lista.clear();
         aux = null;
         cab = null;
         aux = this.p;
@@ -36,5 +37,20 @@ public class Listas {
             aux = aux.sig;
         }
         return lista.toString();
+    }
+
+    public void insertarNodo(int count , int num){
+        Nodo temp1 = this.p ;
+        Nodo temp2 = this.p.sig;
+        for(int i = 1; i < count - 1; i++){
+            if(i == count){
+                break;
+            }
+            temp1 = temp2;
+            temp2 = temp2.sig;
+        }
+        Nodo ins = new Nodo(num);
+        ins.sig = temp2;
+        temp1.sig = ins;
     }
 }

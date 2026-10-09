@@ -22,5 +22,11 @@ public class PrimaryController {
         listLabel.setText(text);
     }
 
+    @FXML
+    private void insertNode() throws IOException {
+        controladorListas.insertarNodo(2, 99);
+        listLabel.setText("Nodo insertado en la posición 2 con el valor 99.");
+    }
+
     
 }
