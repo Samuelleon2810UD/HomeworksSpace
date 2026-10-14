@@ -53,4 +53,34 @@ public class Listas {
         ins.sig = temp2;
         temp1.sig = ins;
     }
+
+    public void quitarNodo(int posicion){
+        if(posicion < 1 || this.p == null){
+            return;
+        }
+        if(posicion == 1){
+            this.p = this.p.sig;
+            return;
+        }
+
+        Nodo anterior = this.p;
+        Nodo actual = this.p.sig;
+        for(int i = 2; i < posicion && actual != null; i++){
+            anterior = actual;
+            actual = actual.sig;
+        }
+        if(actual != null){
+            anterior.sig = actual.sig;
+        }
+    }
+
+    public String visualizarLista(){
+        StringBuilder representacion = new StringBuilder("HEAD");
+        Nodo actual = this.p;
+        while(actual != null){
+            representacion.append(" -> [").append(actual.num).append("]");
+            actual = actual.sig;
+        }
+        return representacion.append(" -> NULL").toString();
+    }
 }

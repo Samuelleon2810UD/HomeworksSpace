@@ -13,20 +13,28 @@ public class PrimaryController {
     @FXML
     private void generateList() throws IOException {
         controladorListas.generarLista(4);
-        listLabel.setText("Lista generada con 4 elementos.");
+        mostrarLista("Lista generada con 4 elementos.");
     }
 
     @FXML
     private void printLista() throws IOException {
         String text = controladorListas.imprimirLista();
-        listLabel.setText(text);
+        mostrarLista("Contenido: " + text);
     }
 
     @FXML
     private void insertNode() throws IOException {
         controladorListas.insertarNodo(2, 99);
-        listLabel.setText("Nodo insertado en la posición 2 con el valor 99.");
+        mostrarLista("Nodo 99 insertado en la posición 2.");
     }
 
-    
+    @FXML
+    private void removeNode() {
+        controladorListas.quitarNodo(2);
+        mostrarLista("Nodo de la posición 2 eliminado.");
+    }
+
+    private void mostrarLista(String mensaje) {
+        listLabel.setText(mensaje + "\n\n" + controladorListas.visualizarLista());
+    }
 }
