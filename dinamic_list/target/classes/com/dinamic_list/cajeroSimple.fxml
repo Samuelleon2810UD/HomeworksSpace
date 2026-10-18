@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_LEFT" prefWidth="760.0" spacing="14.0" style="-fx-background-color: #f3f6f4;" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinamic_list.Controllers.CajeroController">
+   <padding>
+      <Insets bottom="24.0" left="28.0" right="28.0" top="24.0" />
+   </padding>
+   <children>
+      <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Cajero - Cola de clientes" />
+      <Label style="-fx-font-size: 13px; -fx-text-fill: #60736d;" text="Lista simple enlazada · primero en llegar, primero en atenderse (FIFO)" />
+      <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Añadir cliente a la cola" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: #183b35;" text="Cliente:" />
+            <TextField fx:id="clienteField" prefWidth="220.0" promptText="Nombre del cliente" />
+            <Label style="-fx-text-fill: #183b35;" text="Trámites:" />
+            <TextField fx:id="tramitesField" prefWidth="90.0" promptText="Cantidad" />
+            <Button onAction="#agregarCliente" style="-fx-background-color: #176b58; -fx-text-fill: white; -fx-font-weight: bold;" text="Agregar a la cola" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Button onAction="#atenderCliente" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35; -fx-font-weight: bold;" text="Atender siguiente cliente" />
+            <Label fx:id="countLabel" style="-fx-text-fill: #60736d;" text="Clientes en espera: 0" />
+         </children>
+      </HBox>
+      <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Cola del cajero" />
+      <Label fx:id="statusLabel" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #60736d;" text="" wrapText="true" />
+      <Label fx:id="listLabel" maxWidth="1.7976931348623157E308" minHeight="110.0" style="-fx-background-color: white; -fx-border-color: #d5dfda; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 20px; -fx-font-family: monospace; -fx-font-size: 15px; -fx-text-fill: #183b35;" text="La cola está vacía." wrapText="true" />
+   </children>
+</VBox>

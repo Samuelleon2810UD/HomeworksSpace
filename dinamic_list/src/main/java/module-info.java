@@ -4,5 +4,6 @@ module com.dinamic_list {
     requires javafx.graphics;
 
     opens com.dinamic_list to javafx.fxml;
+    opens com.dinamic_list.Controllers to javafx.fxml;
     exports com.dinamic_list;
 }

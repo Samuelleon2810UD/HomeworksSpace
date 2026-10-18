@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_LEFT" prefWidth="760.0" spacing="14.0" style="-fx-background-color: #f3f6f4;" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinamic_list.Controllers.ShowlistsController">
+   <padding>
+      <Insets bottom="24.0" left="28.0" right="28.0" top="24.0" />
+   </padding>
+   <fx:define>
+      <ToggleGroup fx:id="ladoGroup" />
+   </fx:define>
+   <children>
+      <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Lista enlazada" />
+      <Label style="-fx-font-size: 13px; -fx-text-fill: #60736d;" text="Operaciones sobre nodos" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label style="-fx-font-size: 13px; -fx-text-fill: #183b35;" text="Tipo de lista:" />
+            <ComboBox fx:id="listType" onAction="#changeListType" prefWidth="120.0" />
+         </children>
+      </HBox>
+      <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Crear lista" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: #183b35;" text="Cantidad de elementos:" />
+            <TextField fx:id="cantidadField" prefWidth="80.0" promptText="n" />
+            <HBox fx:id="ladoBox" alignment="CENTER_LEFT" spacing="8.0">
+               <children>
+                  <Label style="-fx-text-fill: #183b35;" text="Insertar por la:" />
+                  <RadioButton fx:id="izquierdaRadio" selected="true" text="Izquierda" toggleGroup="$ladoGroup" />
+                  <RadioButton text="Derecha" toggleGroup="$ladoGroup" />
+               </children>
+            </HBox>
+            <Button onAction="#generateList" style="-fx-background-color: #176b58; -fx-text-fill: white; -fx-font-weight: bold;" text="Generar lista" />
+         </children>
+      </HBox>
+      <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Insertar nodo" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: #183b35;" text="Posición:" />
+            <TextField fx:id="posInsertarField" prefWidth="70.0" promptText="n" />
+            <Label style="-fx-text-fill: #183b35;" text="Valor:" />
+            <TextField fx:id="valorField" prefWidth="70.0" promptText="valor" />
+            <Button onAction="#insertNode" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Insertar en posición" />
+            <HBox fx:id="extremosBox" alignment="CENTER_LEFT" spacing="8.0">
+               <children>
+                  <Button onAction="#insertLeft" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Insertar a la izquierda" />
+                  <Button onAction="#insertRight" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Insertar a la derecha" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Quitar nodo" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: #183b35;" text="Posición:" />
+            <TextField fx:id="posQuitarField" prefWidth="70.0" promptText="n" />
+            <Button onAction="#removeNode" style="-fx-background-color: #f4dfd9; -fx-text-fill: #813d2d;" text="Quitar nodo" />
+         </children>
+      </HBox>
+      <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Capturar nodo" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: #183b35;" text="Posición:" />
+            <TextField fx:id="posCapturarField" prefWidth="70.0" promptText="n" />
+            <Button onAction="#captureNode" style="-fx-background-color: #e4e9e6; -fx-text-fill: #183b35;" text="Capturar" />
+            <Button onAction="#printLista" style="-fx-background-color: #e4e9e6; -fx-text-fill: #183b35;" text="Imprimir lista" />
+         </children>
+      </HBox>
+      <Label fx:id="statusLabel" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #60736d;" text="" wrapText="true" />
+      <Label fx:id="listLabel" maxWidth="1.7976931348623157E308" minHeight="90.0" style="-fx-background-color: white; -fx-border-color: #d5dfda; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 20px; -fx-font-family: monospace; -fx-font-size: 15px; -fx-text-fill: #183b35;" text="Genera una lista para ver sus nodos." wrapText="true" />
+   </children>
+</VBox>

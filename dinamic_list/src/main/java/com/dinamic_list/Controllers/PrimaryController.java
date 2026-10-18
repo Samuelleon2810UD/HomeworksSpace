@@ -1,76 +1,32 @@
-package com.dinamic_list;
+package com.dinamic_list.Controllers;
 
 import java.io.IOException;
 
+import com.dinamic_list.App;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 
+/**
+ * Menú principal: desde aquí se abren las interfaces emergentes.
+ */
 public class PrimaryController {
-    private static final String SIMPLE = "Simple";
-    private static final String DOBLE = "Doble";
-
-    private Listas controladorListas = new Listas();
-    @FXML 
-    private Label listLabel;
-    @FXML
-    private ComboBox<String> listType;
-    @FXML
-    private Button insertButton;
-    @FXML
-    private Button removeButton;
 
     @FXML
-    private void initialize() {
-        listType.getItems().addAll(SIMPLE, DOBLE);
-        listType.setValue(SIMPLE);
-    }
-
-    private boolean esDoble() {
-        return DOBLE.equals(listType.getValue());
+    private void abrirListas() {
+        abrir("showlists", "Listas enlazadas");
     }
 
     @FXML
-    private void changeListType() {
-        // Insertar y quitar solo están implementados para la lista simple
-        boolean doble = esDoble();
-        insertButton.setDisable(doble);
-        removeButton.setDisable(doble);
-        mostrarLista("Lista " + (doble ? "doble" : "simple") + " seleccionada.");
+    private void abrirCajero() {
+        abrir("cajeroSimple", "Cajero de atención al cliente");
     }
 
-    @FXML
-    private void generateList() throws IOException {
-        if (esDoble()) {
-            int cantidad = controladorListas.generarListaDoble();
-            mostrarLista("Lista doble generada con " + cantidad + " elementos aleatorios.");
-        } else {
-            controladorListas.generarLista(4);
-            mostrarLista("Lista generada con 4 elementos.");
+    private void abrir(String fxml, String titulo) {
+        try {
+            App.abrirVentana(fxml, titulo);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "No se pudo abrir la ventana: " + e.getMessage()).show();
         }
-    }
-
-    @FXML
-    private void printLista() throws IOException {
-        String text = esDoble() ? controladorListas.imprimirListaDoble() : controladorListas.imprimirLista();
-        mostrarLista("Contenido: " + text);
-    }
-
-    @FXML
-    private void insertNode() throws IOException {
-        controladorListas.insertarNodo(2, 99);
-        mostrarLista("Nodo 99 insertado en la posición 2.");
-    }
-
-    @FXML
-    private void removeNode() {
-        controladorListas.quitarNodo(2);
-        mostrarLista("Nodo de la posición 2 eliminado.");
-    }
-
-    private void mostrarLista(String mensaje) {
-        String visual = esDoble() ? controladorListas.visualizarListaDoble() : controladorListas.visualizarLista();
-        listLabel.setText(mensaje + "\n\n" + visual);
     }
 }

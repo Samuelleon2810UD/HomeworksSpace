@@ -13,7 +13,10 @@ public class Listas {
     private Nodo aux;
     private List<Integer> lista = new ArrayList<>();
 
+    /** Crea una lista nueva con los valores 1, 2, ..., n (descarta la anterior). */
     public void generarLista(int n) {
+        p = null;
+        cab = null;
         for (i = 1; i <= n; i++) {
             if(cab == null){
                 q = new Nodo(i);
@@ -31,8 +34,6 @@ public class Listas {
 
     public String imprimirLista() {
         lista.clear();
-        aux = null;
-        cab = null;
         aux = this.p;
         while(aux != null){
             lista.add(aux.num);
@@ -41,28 +42,44 @@ public class Listas {
         return lista.toString();
     }
 
-    public void insertarNodo(int count , int num){
-        Nodo temp1 = this.p ;
-        Nodo temp2 = this.p.sig;
-        for(int i = 1; i < count - 1; i++){
-            if(i == count){
-                break;
-            }
-            temp1 = temp2;
-            temp2 = temp2.sig;
+    /**
+     * Inserta un nodo de modo que quede en la posición indicada (1 = primero).
+     * Devuelve false si la posición es inválida o queda fuera de la lista.
+     */
+    public boolean insertarNodo(int posicion, int num){
+        if(posicion < 1){
+            return false;
         }
         Nodo ins = new Nodo(num);
-        ins.sig = temp2;
-        temp1.sig = ins;
+        if(this.p == null){
+            this.p = ins;
+            return true;
+        }
+        if(posicion == 1){
+            ins.sig = this.p;
+            this.p = ins;
+            return true;
+        }
+        Nodo anterior = this.p;
+        for(int i = 2; i < posicion && anterior != null; i++){
+            anterior = anterior.sig;
+        }
+        if(anterior == null){
+            return false;
+        }
+        ins.sig = anterior.sig;
+        anterior.sig = ins;
+        return true;
     }
 
-    public void quitarNodo(int posicion){
+    /** Quita el nodo de la posición indicada. Devuelve false si no existe. */
+    public boolean quitarNodo(int posicion){
         if(posicion < 1 || this.p == null){
-            return;
+            return false;
         }
         if(posicion == 1){
             this.p = this.p.sig;
-            return;
+            return true;
         }
 
         Nodo anterior = this.p;
@@ -71,9 +88,31 @@ public class Listas {
             anterior = actual;
             actual = actual.sig;
         }
-        if(actual != null){
-            anterior.sig = actual.sig;
+        if(actual == null){
+            return false;
         }
+        anterior.sig = actual.sig;
+        return true;
+    }
+
+    /** Devuelve el nodo de la posición indicada, o null si no existe. */
+    public Nodo capturar(int posicion){
+        if(posicion < 1){
+            return null;
+        }
+        aux = this.p;
+        for(i = 1; i < posicion && aux != null; i++){
+            aux = aux.sig;
+        }
+        return aux;
+    }
+
+    public int tamano(){
+        int total = 0;
+        for(Nodo actual = this.p; actual != null; actual = actual.sig){
+            total++;
+        }
+        return total;
     }
 
     public String visualizarLista(){
