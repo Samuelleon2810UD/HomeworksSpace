@@ -1,0 +1,54 @@
+--- 1. PATRÓN DE NAVEGACIÓN (BREADCRUMBS + TABS) ---
+Ruta actual: Inicio > Catálogo > Servidor Principal
+Ruta actual: Inicio > Reservas > Laboratorio de Redes
+Ruta actual (al volver a la pestaña Catálogo): Inicio > Catálogo > Servidor Principal
+Ruta actual (tras subir un nivel): Inicio > Catálogo
+
+--- 2. PATRÓN DE CONTENIDO Y ESTRUCTURA (PROGRESSIVE DISCLOSURE) ---
+verAvanzado = false
+[Vista Resumen] Servidor Principal · Estado: Activo
+[Usuario solicita ver detalles avanzados...]
+verAvanzado = true
+[Acordeón Desplegado] IP: 192.168.1.10 | Puerto: 8080 | RAM: 4GB/16GB
+
+--- 3. PATRÓN DE ENTRADA DE DATOS (FORGIVING FORMAT) ---
+Entrada del usuario: "+57 (310) 999-8877"
+Teléfono normalizado sin error: "3109998877"
+Entrada del usuario: "+57 (300) 123-4567"
+Teléfono normalizado sin error: "3001234567"
+Entrada del usuario: "310 999 8877"
+Teléfono normalizado sin error: "3109998877"
+Entrada del usuario: "(310)999.8877"
+Teléfono normalizado sin error: "3109998877"
+Fecha ingresada: "05/11/2026" -> "2026-11-05"
+Fecha ingresada: "5-11-26" -> "2026-11-05"
+Fecha ingresada: "2026.11.05" -> "2026-11-05"
+Fecha ingresada: "5 11 2026" -> "2026-11-05"
+
+--- 4. PATRÓN DE FEEDBACK Y ESTADO (COMPLETENESS METER) ---
+[Progreso: 0%] Campos listos: 0 de 3 (Falta: Teléfono, Fecha de reserva, Correo de contacto)
+Usuario ingresa teléfono: "+57 (310) 999-8877"
+[Progreso: 33%] Campos listos: 1 de 3 (Falta: Fecha de reserva, Correo de contacto)
+Usuario ingresa fecha: "05/11/2026"
+[Progreso: 67%] Campos listos: 2 de 3 (Falta: Correo de contacto)
+Usuario ingresa correo: "estudiante@udistrital.edu.co"
+[Progreso: 100%] ¡Formulario completo!
+
+--- 5. LAZY REGISTRATION + TOAST ---
+Reserva armada sin iniciar sesión. usuarioActivo = false
+[Progreso: 100%] ¡Formulario completo!
+Usuario intenta guardar sin haber iniciado sesión...
+[Lazy Registration] Avance guardado en borrador temporal. Por favor cree su cuenta para finalizar.
+¿Borrador conservado? true | ¿Reserva guardada? false
+Usuario completa registro rápido -> Sesión activa = true
+usuarioActivo = true | Progreso recuperado del borrador: 100%
+Usuario intenta guardar con sesión activa...
+[Toast de Estado] Reserva guardada exitosamente.
+¿Reserva guardada? true
+
+--- EXTRA. CERO DARK PATTERNS (SALIDA EN UN SOLO PASO) ---
+Usuario pulsa 'Cancelar reserva' (1 clic):
+[Toast de Estado] Reserva cancelada.
+Usuario pulsa 'Cerrar sesión' (1 clic):
+[Toast de Estado] Sesión cerrada.
+usuarioActivo = false
