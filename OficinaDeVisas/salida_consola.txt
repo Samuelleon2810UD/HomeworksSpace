@@ -1,0 +1,102 @@
+
+==============================================================================
+CASO 1 - God Object: tramitar la visa de Marta
+==============================================================================
+
+--- Version HEREDADA: Ramiro lo hace todo ---
+   [OficinaDeTodo] Cobrando $190.0 a Marta
+   [OficinaDeTodo] Guardando expediente de Marta
+   [OficinaDeTodo] Correo para Marta: su visa va en camino
+
+--- Version RESCATADA: una clase por responsabilidad ---
+   [ValidadorDePasaporte] Pasaporte valido
+   [CajaDePagos] Cobrando $190.0 a Marta
+   [ArchivoDeExpedientes] Guardando expediente de Marta
+   [NotificadorDeCorreo] Correo para Marta: su visa va en camino
+   >> VERIFICACION: Ambas aprueban el tramite ... OK
+
+==============================================================================
+CASO 2 - Copy-Paste Programming: subir la tarifa base de 50 a 60
+==============================================================================
+
+--- Version HEREDADA (formula clonada 3 veces) ---
+   [Heredada] Lugares editados: 3
+   [Heredada] Turista=190.0  Estudiante=95.0  Trabajo=285.0
+
+--- Version HEREDADA si alguien edita solo 2 lugares (lo que paso en el consulado) ---
+   [Heredada] Trabajo=240.0  <-- se quedo con la tarifa vieja (deberia ser 285.0)
+
+--- Version RESCATADA (Strategy) ---
+   [Strategy] Lugares editados: 1
+   [Strategy] Turista=190.0  Estudiante=95.0  Trabajo=285.0
+   >> VERIFICACION: Heredada exigio 3 ediciones y Strategy 1 ... OK
+   >> VERIFICACION: El precio final coincide en ambas versiones ... OK
+
+==============================================================================
+CASO 3 - Magic Numbers: evaluar visas
+==============================================================================
+
+--- tipo 2 y edad 20  vs  TipoVisa.ESTUDIANTE ---
+   [Heredada] APROBADA
+   [Rescatada] APROBADA -> Visa ESTUDIANTE aprobada para edad 20
+
+--- tipo inexistente 9 ---
+   [Heredada] RECHAZADA   (sin ninguna explicacion)
+   [Rescatada] RECHAZADA -> Tipo de visa invalido: 9. Tipos validos: 1=TURISTA, 2=ESTUDIANTE, 3=TRABAJO
+   >> VERIFICACION: Mismo resultado para tipo 2 / ESTUDIANTE ... OK
+   >> VERIFICACION: El tipo 9 se rechaza con mensaje claro en la version nueva ... OK
+
+==============================================================================
+CASO 4 - Acoplamiento fuerte: cancelar una solicitud
+==============================================================================
+
+--- Version HEREDADA: SolicitudAcoplada llama a los servicios a mano ---
+   [CorreoServicio] Aviso de cancelacion enviado al viajero
+   [CitasServicio] Cupo de la cita liberado
+   [Heredada] Estado: CANCELADA
+   [Heredada] !! REEMBOLSO OLVIDADO: la caja de pagos nunca se entero
+
+--- Version RESCATADA: Observer ---
+   [CorreoObserver] Aviso de cancelacion enviado a Luis
+   [CitasObserver] Cupo de la cita de Luis liberado
+   [PagosObserver] Reembolso procesado para Luis
+   [Rescatada] Estado: CANCELADA
+   >> VERIFICACION: La heredada olvido el reembolso ... OK
+   >> VERIFICACION: La nueva aviso a correo, citas y pagos (reembolsos: 1) ... OK
+
+==============================================================================
+CASO 5 - Integracion: viaje completo con la version nueva
+==============================================================================
+
+--- 1. Solicitar ---
+   [Main] Solicitud creada: Ana, visa TRABAJO, 6 meses
+
+--- 2. Evaluar ---
+   [EvaluadorDeVisas] APROBADA -> Visa TRABAJO aprobada para edad 30
+
+--- 3. Cobrar ---
+   [ValidadorDePasaporte] Pasaporte valido
+   [CajaDePagos] Cobrando $555.0 a Ana
+   [ArchivoDeExpedientes] Guardando expediente de Ana
+   [NotificadorDeCorreo] Correo para Ana: su visa va en camino
+
+--- 4. Cancelar ---
+   [CorreoObserver] Aviso de cancelacion enviado a Ana
+   [CitasObserver] Cupo de la cita de Ana liberado
+   [PagosObserver] Reembolso procesado para Ana
+   >> VERIFICACION: Evaluada, cobrada y cancelada con reembolso ... OK
+
+--- Tabla final: antipatrones capturados ---
++------------------------+--------------------------------------------+--------------------------------------------+
+| Antipatron             | Sintoma                                    | Solucion                                   |
++------------------------+--------------------------------------------+--------------------------------------------+
+| God Object             | Una clase valida, cobra, guarda y avisa    | Una clase por responsabilidad (SRP)        |
+| Copy-Paste Programming | Formula de tarifa copiada 3 veces          | Strategy + un unico punto de tarifa base   |
+| Magic Numbers          | tipo == 3, 0.5 sin significado             | Enum TipoVisa y constantes con nombre      |
+| Acoplamiento fuerte    | La solicitud crea y llama a 3 servicios    | Observer: la solicitud no conoce a nadie   |
++------------------------+--------------------------------------------+--------------------------------------------+
+
+==============================================================================
+RESUMEN
+==============================================================================
+Todas las verificaciones pasaron.
