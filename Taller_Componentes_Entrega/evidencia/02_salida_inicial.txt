@@ -1,0 +1,4 @@
+$ java -cp espada.jar:casco.jar:out app.Main
+=== PRUEBA INICIAL: COMPONENT QUEST ===
+Ataque con espada: -50 pts
+Defensa del casco: CASCO DESTRUIDO: No soporta ataques de FUEGO

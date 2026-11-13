@@ -1,0 +1,24 @@
+$ javac -d out modulo-peto/src/peto/PetoEnlace.java   (sin modulo-botas)
+inicial/modulo-peto/src/peto/PetoEnlace.java:3: error: package botas does not exist
+import botas.BotasEnlace;
+            ^
+inicial/modulo-peto/src/peto/PetoEnlace.java:6: error: cannot find symbol
+    public boolean escudoActivo(BotasEnlace botas) {
+                                ^
+  symbol:   class BotasEnlace
+  location: class PetoEnlace
+2 errors
+
+$ javac -d out modulo-botas/src/botas/BotasEnlace.java   (sin modulo-peto)
+inicial/modulo-botas/src/botas/BotasEnlace.java:3: error: package peto does not exist
+import peto.PetoEnlace;
+           ^
+inicial/modulo-botas/src/botas/BotasEnlace.java:10: error: cannot find symbol
+    public boolean sincronizar(PetoEnlace peto) {
+                               ^
+  symbol:   class PetoEnlace
+  location: class BotasEnlace
+2 errors
+
+$ javac -d out modulo-peto/... modulo-botas/...   (juntos: compila, pero ya no son independientes)
+OK solo si se compilan juntos

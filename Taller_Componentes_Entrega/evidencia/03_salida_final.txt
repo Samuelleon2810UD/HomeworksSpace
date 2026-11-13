@@ -1,0 +1,14 @@
+$ java -cp core-v1.0.jar:espada-v1.0.jar:peto-v1.0.jar:botas-v1.0.jar:casco-v1.0.jar:out app.Main
+=== PRUEBA FINAL: COMPONENT QUEST (componentes .jar v1.0) ===
+
+--- Ronda 1: Dragon Ignis ---
+Ataque con espada: 50 pts
+
+--- Ronda 2: Golem Sismico ---
+Con botas -> escudo activo: true | escudo reforzado: true
+Sin botas -> escudo activo: true | escudo reforzado: false
+
+--- Ronda 4: Espectro Cambiante (FUEGO) ---
+CascoHierroSellado vs FISICO: Golpe fisico bloqueado
+CascoHierroSellado vs FUEGO : CASCO DESTRUIDO: No soporta ataques de FUEGO
+CascoRunico        vs FUEGO : Ataque de FUEGO resistido por las runas
