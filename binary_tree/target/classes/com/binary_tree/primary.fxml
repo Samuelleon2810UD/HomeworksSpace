@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/13"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.binary_tree.PrimaryController">
+    <top>
+        <VBox spacing="12.0" style="-fx-background-color: #f4f6f8;">
+            <padding>
+                <Insets top="18.0" right="20.0" bottom="14.0" left="20.0"/>
+            </padding>
+            <Label text="Lista simple y árbol binario de búsqueda"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <HBox spacing="10.0">
+                <Button text="Generar lista" onAction="#generarLista"/>
+                <Button fx:id="vaciarButton" text="Vaciar lista" onAction="#vaciarLista"/>
+                <Button fx:id="construirButton" text="Construir y visualizar árbol"
+                        onAction="#construirArbol"/>
+            </HBox>
+            <Label fx:id="listaLabel" text="HEAD -> NULL" wrapText="true"/>
+            <Label fx:id="mensajeLabel" text="Genera una lista para comenzar."/>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToHeight="true" pannable="true">
+            <content>
+                <Pane fx:id="arbolPane" minWidth="700.0" minHeight="400.0"
+                      style="-fx-background-color: white;"/>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
