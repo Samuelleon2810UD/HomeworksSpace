@@ -38,10 +38,10 @@
             </HBox>
             <HBox fx:id="circularBox" alignment="CENTER_LEFT" spacing="8.0">
                <children>
-                  <Label style="-fx-text-fill: #183b35;" text="Cantidad:" />
-                  <TextField fx:id="cantidadCircularField" prefWidth="70.0" promptText="n" />
+                  <!--<Label style="-fx-text-fill: #183b35;" text="Cantidad:" />-->
+                  <!--<TextField fx:id="cantidadCircularField" prefWidth="70.0" promptText="n" /> -->
                   <Button onAction="#generarPrimerElementoListaCircular" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Crear primer nodo" />
-                  <Button onAction="#generarListaCircularN" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Generar n nodos" />
+                  <!--<Button onAction="#generarListaCircularN" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Generar n nodos" /> -->
                   <Button onAction="#añadirNElementosListaCricular" style="-fx-background-color: #dce9e3; -fx-text-fill: #183b35;" text="Añadir n nodos" />
                </children>
             </HBox>
@@ -52,7 +52,7 @@
                   <RadioButton text="Derecha" toggleGroup="$ladoGroup" />
                </children>
             </HBox>
-            <Button onAction="#generateList" style="-fx-background-color: #176b58; -fx-text-fill: white; -fx-font-weight: bold;" text="Generar lista" />
+            <!--<Button onAction="#generateList" style="-fx-background-color: #176b58; -fx-text-fill: white; -fx-font-weight: bold;" text="Generar lista" />-->
          </children>
       </HBox>
       <Label fx:id="insertPositionTitle" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #183b35;" text="Insertar nodo" />
@@ -121,7 +121,7 @@
          </children>
       </VBox>
       <Label fx:id="statusLabel" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #60736d;" text="" wrapText="true" />
-      <ScrollPane fx:id="listScrollPane" fitToHeight="true" hbarPolicy="AS_NEEDED" maxHeight="250.0" minHeight="150.0" prefHeight="210.0" style="-fx-background-color: white; -fx-border-color: #d5dfda; -fx-border-radius: 4px; -fx-background-radius: 4px;" vbarPolicy="AS_NEEDED">
+      <ScrollPane fx:id="listScrollPane" VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="420.0" minHeight="180.0" prefHeight="320.0" style="-fx-background-color: white; -fx-border-color: #d5dfda; -fx-border-radius: 4px; -fx-background-radius: 4px;" vbarPolicy="AS_NEEDED">
          <content>
             <VBox fx:id="listGraphic" alignment="CENTER_LEFT" minHeight="130.0" spacing="14.0" style="-fx-background-color: white; -fx-padding: 18px;">
                <children>

@@ -2,9 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -13,28 +21,183 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.binary_tree.PrimaryController">
     <top>
-        <VBox spacing="12.0" style="-fx-background-color: #f4f6f8;">
+        <VBox spacing="10.0" style="-fx-background-color: #f4f6f8;">
             <padding>
-                <Insets top="18.0" right="20.0" bottom="14.0" left="20.0"/>
+                <Insets top="16.0" right="18.0" bottom="12.0" left="18.0"/>
             </padding>
             <Label text="Lista simple y árbol binario de búsqueda"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-            <HBox spacing="10.0">
-                <Button text="Generar lista" onAction="#generarLista"/>
-                <Button fx:id="vaciarButton" text="Vaciar lista" onAction="#vaciarLista"/>
-                <Button fx:id="construirButton" text="Construir y visualizar árbol"
-                        onAction="#construirArbol"/>
-            </HBox>
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"
+                   wrapText="true"/>
+            <FlowPane hgap="8.0" vgap="8.0">
+                <children>
+                    <Button text="Generar lista" onAction="#generarLista"/>
+                    <Button fx:id="vaciarButton" text="Vaciar lista" onAction="#vaciarLista"/>
+                    <Button fx:id="construirButton" text="Construir árbol"
+                            onAction="#construirArbol"/>
+                </children>
+            </FlowPane>
             <Label fx:id="listaLabel" text="HEAD -> NULL" wrapText="true"/>
-            <Label fx:id="mensajeLabel" text="Genera una lista para comenzar."/>
+            <Label fx:id="mensajeLabel" text="Genera una lista para comenzar." wrapText="true"/>
         </VBox>
     </top>
     <center>
-        <ScrollPane fitToHeight="true" pannable="true">
-            <content>
-                <Pane fx:id="arbolPane" minWidth="700.0" minHeight="400.0"
-                      style="-fx-background-color: white;"/>
-            </content>
-        </ScrollPane>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Árbol">
+                    <content>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                            <content>
+                                <Pane fx:id="arbolPane" minWidth="0.0" minHeight="400.0"
+                                      style="-fx-background-color: white;"/>
+                            </content>
+                        </ScrollPane>
+                    </content>
+                </Tab>
+                <Tab text="Análisis">
+                    <content>
+                        <ScrollPane fitToWidth="true" pannable="true">
+                            <content>
+                                <VBox spacing="14.0" style="-fx-background-color: #fafafa;">
+                                    <padding>
+                                        <Insets top="16.0" right="18.0" bottom="18.0" left="18.0"/>
+                                    </padding>
+                                    <Button fx:id="analizarButton" text="Analizar árbol"
+                                            onAction="#analizarArbol"/>
+                                    <GridPane hgap="12.0" vgap="12.0">
+                                        <columnConstraints>
+                                            <ColumnConstraints percentWidth="50.0" hgrow="ALWAYS"/>
+                                            <ColumnConstraints percentWidth="50.0" hgrow="ALWAYS"/>
+                                        </columnConstraints>
+                                        <children>
+                                            <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                                <Label text="Nodos rama" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="ramasLabel" text="—" wrapText="true"/>
+                                                <GridPane.columnIndex>0</GridPane.columnIndex>
+                                                <GridPane.rowIndex>0</GridPane.rowIndex>
+                                            </VBox>
+                                            <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                                <Label text="Nodos hoja" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="hojasLabel" text="—" wrapText="true"/>
+                                                <GridPane.columnIndex>1</GridPane.columnIndex>
+                                                <GridPane.rowIndex>0</GridPane.rowIndex>
+                                            </VBox>
+                                            <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                                <Label text="Grado máximo del árbol" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="gradoArbolLabel" text="—"/>
+                                                <GridPane.columnIndex>0</GridPane.columnIndex>
+                                                <GridPane.rowIndex>1</GridPane.rowIndex>
+                                            </VBox>
+                                            <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                                <Label text="Longitud del árbol (nodos)" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="longitudLabel" text="—"/>
+                                                <GridPane.columnIndex>1</GridPane.columnIndex>
+                                                <GridPane.rowIndex>1</GridPane.rowIndex>
+                                            </VBox>
+                                            <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                                <Label text="Hoja más lejana" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="hojaLejanaLabel" text="—"/>
+                                                <Label text="Camino desde la raíz" style="-fx-font-weight: bold;"
+                                                       wrapText="true"/>
+                                                <Label fx:id="caminoLabel" text="—" wrapText="true"/>
+                                                <GridPane.columnIndex>0</GridPane.columnIndex>
+                                                <GridPane.columnSpan>2</GridPane.columnSpan>
+                                                <GridPane.rowIndex>2</GridPane.rowIndex>
+                                            </VBox>
+                                            <VBox spacing="5.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                                <Label text="Peso del árbol" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="pesoArbolLabel" text="—"/>
+                                                <GridPane.columnIndex>0</GridPane.columnIndex>
+                                                <GridPane.rowIndex>3</GridPane.rowIndex>
+                                            </VBox>
+                                        </children>
+                                    </GridPane>
+                                    <VBox spacing="8.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                        <Label text="Recorridos del árbol" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+                                        <Label text="Preorden" style="-fx-font-weight: bold;"/>
+                                        <Label fx:id="preordenLabel" text="—" wrapText="true"/>
+                                        <Label text="Inorden" style="-fx-font-weight: bold;"/>
+                                        <Label fx:id="inordenLabel" text="—" wrapText="true"/>
+                                        <Label text="Postorden" style="-fx-font-weight: bold;"/>
+                                        <Label fx:id="postordenLabel" text="—" wrapText="true"/>
+                                    </VBox>
+                                    <VBox spacing="8.0" style="-fx-background-color: white; -fx-padding: 12;">
+                                        <Label text="Consulta de un nodo" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+                                        <Label text="Longitud cuenta los nodos del camino. La altura indica el nivel desde la raíz, empezando en 0."
+                                               wrapText="true"/>
+                                        <HBox spacing="8.0">
+                                            <TextField fx:id="numeroField" promptText="Valor del nodo"
+                                                       HBox.hgrow="ALWAYS"/>
+                                            <Button fx:id="consultarGradoButton" text="Consultar"
+                                                    onAction="#consultarGrado"/>
+                                        </HBox>
+                                        <Label fx:id="gradoResultadoLabel" wrapText="true"
+                                               style="-fx-line-spacing: 3px;"/>
+                                    </VBox>
+                                </VBox>
+                            </content>
+                        </ScrollPane>
+                    </content>
+                </Tab>
+                <Tab text="Subárboles">
+                    <content>
+                        <ScrollPane fitToWidth="true" pannable="true">
+                            <content>
+                                <VBox spacing="12.0" style="-fx-background-color: #fafafa;">
+                                    <padding>
+                                        <Insets top="16.0" right="18.0" bottom="18.0" left="18.0"/>
+                                    </padding>
+                                    <Label text="Coincidencias entre subárboles"
+                                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                    <Label text="Iguales: misma forma y valores. Equivalentes: misma forma y posiciones izquierda/derecha, sin considerar valores. Isomorfos: misma forma permitiendo intercambiar hijos, sin considerar valores."
+                                           wrapText="true"/>
+                                    <FlowPane hgap="8.0" vgap="8.0">
+                                        <children>
+                                            <VBox spacing="4.0" style="-fx-background-color: white; -fx-padding: 10;">
+                                                <Label text="Subárboles iguales" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="igualesCantidadLabel" text="Sin analizar"/>
+                                            </VBox>
+                                            <VBox spacing="4.0" style="-fx-background-color: white; -fx-padding: 10;">
+                                                <Label text="Subárboles equivalentes" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="equivalentesCantidadLabel" text="Sin analizar"/>
+                                            </VBox>
+                                            <VBox spacing="4.0" style="-fx-background-color: white; -fx-padding: 10;">
+                                                <Label text="Subárboles isomorfos" style="-fx-font-weight: bold;"/>
+                                                <Label fx:id="isomorfosCantidadLabel" text="Sin analizar"/>
+                                            </VBox>
+                                        </children>
+                                    </FlowPane>
+                                    <ComboBox fx:id="comparacionCombo" maxWidth="Infinity"/>
+                                    <Label fx:id="cantidadSubarbolesLabel" text="Analiza el árbol para ver las parejas."
+                                           wrapText="true"/>
+                                    <ListView fx:id="paresList" prefHeight="130.0" minHeight="90.0"/>
+                                    <HBox spacing="12.0">
+                                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                            <Label text="Primer subárbol"/>
+                                            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true"
+                                                        prefViewportHeight="240.0">
+                                                <content>
+                                                    <Pane fx:id="primerSubarbolPane" minWidth="0.0" minHeight="200.0"
+                                                          style="-fx-background-color: white;"/>
+                                                </content>
+                                            </ScrollPane>
+                                        </VBox>
+                                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                            <Label text="Segundo subárbol"/>
+                                            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true"
+                                                        prefViewportHeight="240.0">
+                                                <content>
+                                                    <Pane fx:id="segundoSubarbolPane" minWidth="0.0" minHeight="200.0"
+                                                          style="-fx-background-color: white;"/>
+                                                </content>
+                                            </ScrollPane>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                            </content>
+                        </ScrollPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
     </center>
 </BorderPane>

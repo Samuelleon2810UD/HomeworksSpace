@@ -7,6 +7,7 @@ import java.util.Random;
 import com.dinamic_list.Nodes.Nodo;
 
 public class ListasCircular {
+    private static final int MAX_NODOS_ALEATORIOS_POR_ADICION = 20;
     private Nodo p;
     private Nodo cab;
     private final Random aleatorio = new Random();
@@ -16,7 +17,7 @@ public class ListasCircular {
     }
 
     public void instanciarPrimerElemento() {
-        p = new Nodo(aleatorio.nextInt(9) + 1);
+        p = new Nodo(-1);
         p.sig = p;
         cab = p;
     }
@@ -40,6 +41,12 @@ public class ListasCircular {
                 cab.sig = p;
             }
         }
+    }
+
+    public int agregarNodosAleatorios() {
+        int cantidad = aleatorio.nextInt(MAX_NODOS_ALEATORIOS_POR_ADICION) + 1;
+        añadirNElementos(cantidad);
+        return cantidad;
     }
 
     public String imprimirLista() {

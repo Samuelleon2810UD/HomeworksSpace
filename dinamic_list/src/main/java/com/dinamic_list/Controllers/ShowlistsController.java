@@ -14,7 +14,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -43,8 +45,6 @@ public class ShowlistsController {
     private HBox cantidadBox;
     @FXML
     private HBox circularBox;
-    @FXML
-    private TextField cantidadCircularField;
     @FXML
     private HBox ladoBox;
     @FXML
@@ -171,31 +171,9 @@ public class ShowlistsController {
 
     @FXML
     private void añadirNElementosListaCricular(){
-        Integer cantidad = leerEntero(cantidadCircularField, "la cantidad de elementos que quieres añadir");
-        if (cantidad == null) {
-            return;
-        }
-        if (cantidad < 1 || cantidad > MAX_ELEMENTOS) {
-            error("La cantidad a añadir debe estar entre 1 y " + MAX_ELEMENTOS + ".");
-            return;
-        }
-        controladorListasCircular.añadirNElementos(cantidad);
+        int cantidad = controladorListasCircular.agregarNodosAleatorios();
         exito("Se añadieron " + cantidad + " nodos aleatorios. La lista tiene "
                 + controladorListasCircular.tamano() + " elementos.");
-    }
-
-    @FXML
-    private void generarListaCircularN() {
-        Integer cantidad = leerEntero(cantidadCircularField, "la cantidad de elementos");
-        if (cantidad == null) {
-            return;
-        }
-        if (cantidad < 1 || cantidad > MAX_ELEMENTOS) {
-            error("La cantidad debe estar entre 1 y " + MAX_ELEMENTOS + ".");
-            return;
-        }
-        controladorListasCircular.generarLista(cantidad);
-        exito("Lista circular generada con " + cantidad + " nodos aleatorios.");
     }
 
     @FXML
@@ -500,7 +478,12 @@ public class ShowlistsController {
 
     private void actualizarVista(int posicionActiva) {
         int total = tamano();
+        boolean vistaCompactaCircular = esCircular() && total > 15;
         listGraphic.getChildren().clear();
+        listGraphic.setSpacing(vistaCompactaCircular ? 6.0 : 14.0);
+        listGraphic.setStyle(vistaCompactaCircular
+                ? "-fx-background-color: white; -fx-padding: 8px;"
+                : "-fx-background-color: white; -fx-padding: 18px;");
         if (total == 0) {
             Label vacia = new Label("La lista está vacía. Genera nodos para ver la estructura.");
             vacia.setStyle("-fx-text-fill: #60736d; -fx-font-size: 14px;");
@@ -509,17 +492,30 @@ public class ShowlistsController {
         }
 
         Label encabezado = new Label(esCircular()
-                ? "p apunta al primer nodo  •  cab señala el último nodo"
+                ? vistaCompactaCircular
+                    ? "p es el inicio  •  los nodos siguen el orden de las flechas"
+                    : "p apunta al primer nodo  •  cab señala el último nodo"
                 : "HEAD apunta al primer nodo");
-        encabezado.setStyle("-fx-text-fill: #183b35; -fx-font-weight: bold; -fx-font-size: 13px;");
+        encabezado.setStyle("-fx-text-fill: #183b35; -fx-font-weight: bold;"
+                + (vistaCompactaCircular ? "-fx-font-size: 11px;" : "-fx-font-size: 13px;"));
 
-        HBox cadena = new HBox(8.0);
-        cadena.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        Label inicio = new Label(esCircular() ? "p" : "HEAD");
-        inicio.setStyle("-fx-background-color: #176b58; -fx-text-fill: white; -fx-font-weight: bold;"
-                + "-fx-padding: 8px 12px; -fx-background-radius: 6px;");
-        cadena.getChildren().add(inicio);
-        agregarFlecha(cadena, "→");
+        Pane cadena;
+        if (esCircular()) {
+            FlowPane nodos = new FlowPane(vistaCompactaCircular ? 4.0 : 8.0,
+                    vistaCompactaCircular ? 3.0 : 10.0);
+            nodos.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+            nodos.setMaxWidth(Double.MAX_VALUE);
+            cadena = nodos;
+        } else {
+            HBox nodos = new HBox(8.0);
+            nodos.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+            cadena = nodos;
+            Label inicio = new Label("HEAD");
+            inicio.setStyle("-fx-background-color: #176b58; -fx-text-fill: white; -fx-font-weight: bold;"
+                    + "-fx-padding: 8px 12px; -fx-background-radius: 6px;");
+            nodos.getChildren().add(inicio);
+            agregarFlecha(nodos, "→");
+        }
 
         for (int posicion = 1; posicion <= total; posicion++) {
             Nodo nodoSimple = null;
@@ -533,6 +529,22 @@ public class ShowlistsController {
             }
 
             int numero = esDoble() ? nodoDoble.num : nodoSimple.num;
+            if (vistaCompactaCircular) {
+                String etiqueta = (posicion == 1 ? "p → " : "")
+                        + posicion + ":" + numero
+                        + (posicion == total ? " ↶p" : " →");
+                Label nodoCompacto = new Label(etiqueta);
+                nodoCompacto.setStyle(
+                        (posicion == posicionActiva
+                                ? "-fx-background-color: #fff1bd; -fx-border-color: #e2a900;"
+                                : "-fx-background-color: #eaf3ef; -fx-border-color: #9bb9aa;")
+                                + "-fx-text-fill: #183b35; -fx-border-radius: 5px;"
+                                + "-fx-background-radius: 5px; -fx-padding: 2px 4px;"
+                                + "-fx-font-size: 9px; -fx-font-weight: bold;");
+                cadena.getChildren().add(nodoCompacto);
+                continue;
+            }
+
             String siguiente = esCircular()
                     ? (posicion == total ? "p" : String.valueOf(controladorListasCircular.capturar(posicion + 1).num))
                     : esDoble()
@@ -544,19 +556,34 @@ public class ShowlistsController {
 
             VBox tarjeta = new VBox(4.0);
             tarjeta.setAlignment(javafx.geometry.Pos.CENTER);
-            tarjeta.setMinWidth(105.0);
+            tarjeta.setMinWidth(esCircular() ? 85.0 : 105.0);
+            if (esCircular()) {
+                tarjeta.setPrefWidth(105.0);
+                tarjeta.setMaxWidth(115.0);
+            }
             tarjeta.setStyle(posicion == posicionActiva
                     ? "-fx-background-color: #fff1bd; -fx-border-color: #e2a900; -fx-border-width: 2px;"
-                        + "-fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px;"
+                        + "-fx-border-radius: 8px; -fx-background-radius: 8px;"
+                        + (esCircular() ? "-fx-padding: 7px;" : "-fx-padding: 10px;")
                     : "-fx-background-color: #eaf3ef; -fx-border-color: #9bb9aa;"
-                        + "-fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px;");
-            Label indice = new Label((posicion == posicionActiva ? "▶ " : "") + "Nodo " + posicion
+                        + "-fx-border-radius: 8px; -fx-background-radius: 8px;"
+                        + (esCircular() ? "-fx-padding: 7px;" : "-fx-padding: 10px;"));
+            Label indice = new Label((esCircular() && posicion == 1 ? "p → " : "")
+                    + (posicion == posicionActiva ? "▶ " : "") + "Nodo " + posicion
                     + (esCircular() && posicion == total ? " · cab" : ""));
             indice.setStyle("-fx-text-fill: #60736d; -fx-font-size: 11px; -fx-font-weight: bold;");
             Label valor = new Label("num = " + numero);
             valor.setStyle("-fx-text-fill: #183b35; -fx-font-size: 15px; -fx-font-weight: bold;");
             Label enlace = new Label("sig → " + siguiente);
             enlace.setStyle("-fx-text-fill: #176b58; -fx-font-size: 11px;");
+            if (esCircular()) {
+                indice.setWrapText(true);
+                valor.setWrapText(true);
+                enlace.setWrapText(true);
+                indice.setMaxWidth(Double.MAX_VALUE);
+                valor.setMaxWidth(Double.MAX_VALUE);
+                enlace.setMaxWidth(Double.MAX_VALUE);
+            }
             tarjeta.getChildren().addAll(indice, valor);
             if (nodoDoble != null) {
                 Label enlaceAnterior = new Label("ant ← " + anterior);
@@ -565,7 +592,7 @@ public class ShowlistsController {
             }
             tarjeta.getChildren().add(enlace);
             cadena.getChildren().add(tarjeta);
-            if (posicion < total || !esCircular()) {
+            if (!esCircular()) {
                 agregarFlecha(cadena, "→");
             }
         }
@@ -580,9 +607,11 @@ public class ShowlistsController {
         contenido.add(encabezado);
         contenido.add(cadena);
         if (esCircular()) {
-            Label retorno = new Label("↶  cab.sig regresa a p (la lista se cierra en círculo)");
-            retorno.setStyle("-fx-text-fill: #176b58; -fx-font-weight: bold; -fx-padding: 4px 0 0 12px;");
-            contenido.add(retorno);
+            if (!vistaCompactaCircular) {
+                Label retorno = new Label("↶  cab.sig regresa a p (la lista se cierra en círculo)");
+                retorno.setStyle("-fx-text-fill: #176b58; -fx-font-weight: bold; -fx-padding: 4px 0 0 12px;");
+                contenido.add(retorno);
+            }
         } else if (esDoble()) {
             Label extremos = new Label("NULL ← ant del primer nodo     •     sig del último nodo → NULL");
             extremos.setStyle("-fx-text-fill: #60736d; -fx-padding: 4px 0 0 12px;");
@@ -591,7 +620,7 @@ public class ShowlistsController {
         listGraphic.getChildren().setAll(contenido);
     }
 
-    private void agregarFlecha(HBox cadena, String texto) {
+    private void agregarFlecha(Pane cadena, String texto) {
         Label flecha = new Label(texto);
         flecha.setStyle("-fx-text-fill: #176b58; -fx-font-size: 20px; -fx-font-weight: bold;");
         cadena.getChildren().add(flecha);
